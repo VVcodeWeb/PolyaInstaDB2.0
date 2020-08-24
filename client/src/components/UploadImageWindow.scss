@@ -1,0 +1,59 @@
+@import "../variables";
+.upload_image_window{
+    position: fixed;
+    width: 700px;
+    height: 600px;
+    top: calc(50% - 400px);
+    left: calc(50% - 300px);
+    box-shadow: 3px 3px 5px 6px #ccc;
+    background: #fcfcfc;
+    transition: all 0.5s ease-out;
+    z-index: 10;
+    .notes{
+        display: flex;
+        justify-content: space-around;
+        opacity: 0;
+        transform: translateY(-20px);
+        transition: all 0.3s ease-out;
+        font-size: 12px;
+        p{
+            border-right: 1px solid #f3f3f3;
+        }
+    }
+
+    .notes.open{
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+   
+    &__text{
+        .question_circle{
+            color: $another_green;
+            cursor: pointer;
+        }
+        &_note{
+            display: flex;
+            align-items: center;
+            p{
+                margin: 0;
+            }
+        }
+    }
+    &__upload_file{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        
+    }
+    .server_response{
+        &__body{
+            overflow-y: scroll;
+            height: 280px;
+            &__errors{
+                display: flex;
+                justify-content: space-between;
+            }
+        }
+    }
+}

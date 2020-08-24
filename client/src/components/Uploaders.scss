@@ -1,0 +1,34 @@
+.open_window{
+    transform: translateX(0);
+    opacity: 1;
+    animation: opening 0.5s ease-out;
+}
+.close_icon_wrapper{
+    position: absolute;
+    top: 20px;
+    right: 30px;
+}
+.overflow_y_scroll{
+    overflow-y: scroll;
+}
+
+.close_window{
+    opacity: 0;
+    transform: translateX(1000px);
+}
+
+.close_icon_wrapper{
+    &:hover{
+        cursor: pointer;
+    }
+}
+@keyframes opening{
+    from{
+        opacity: 0;
+        transform: translateX(1000px);
+    }
+    to{
+        opacity: 1;
+        transform: translateX(0);
+    }
+}

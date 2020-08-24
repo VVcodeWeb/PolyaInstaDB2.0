@@ -1,0 +1,45 @@
+@import "../variables";
+.side_bar{
+    width: 200px;
+    background: #0A3763;
+    display: inline-block;
+    min-height: 100vh;
+    &__content_wrapper{
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        width: 40px;
+        margin: auto;
+        .content__buttons{
+            width: 100%;
+            .icons{
+                font-size: 35px;
+                margin-top: 40px;
+                color: $main_green;
+            }
+        }
+        .uploader{
+            &:hover{
+                cursor: pointer;
+            }
+        }
+    }
+    
+    .submit_button{
+        padding: 5px 50px;
+        border-radius: 10px;
+        border: none;
+        color: #ffffff;
+        font-weight: bold;
+        background-color: $main_green;
+        &:hover{
+            background-color: $another_green;
+        }
+        &:focus{
+            outline: none;
+        }
+    }
+    .test{
+        color: red;
+    }
+}

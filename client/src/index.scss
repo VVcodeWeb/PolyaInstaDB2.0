@@ -1,0 +1,29 @@
+@import "~bootstrap/scss/bootstrap";
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@font-face{
+  font-family: "PT_Serif_italic";
+  src: url("fonts/PTSerif-Italic.ttf") format('truetype');
+}
+
+@font-face{
+  font-family: "PT_Serif_bold";
+  src: url("fonts/PTSerif-Bold.ttf") format('truetype');
+}
+
+@import "variables";
+html, body{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
