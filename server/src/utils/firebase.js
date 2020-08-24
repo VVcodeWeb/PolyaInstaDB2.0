@@ -13,7 +13,7 @@ const serviceAccount = {
   "client_x509_cert_url": process.env.client_x509_cert_url
 }
 
-
+console.log(process.env.private_key)
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
