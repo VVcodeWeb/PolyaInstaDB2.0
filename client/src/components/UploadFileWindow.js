@@ -1,13 +1,15 @@
 import React, { useState } from "react";
-import "./UploadImageWindow.scss";
+import "./UploadFileWindow.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import "./Uploaders.scss"
+import ButtonLoader from "./ButtonLoader"
 
 function UploadImageWindow(props) {
   const [selectedFile, setSelectedFile] = useState(null);
   //const [receivedUploadResponse, setReceivedUploadResponse] = useState(false)
+  const [sentRequestStatus, setSentRequestStatus] = useState(false) 
   const [serverResponse, setServerResponse] = useState("");
   const [noteDropStatus, setNoteDropStatus] = useState(false);
 
@@ -21,17 +23,21 @@ function UploadImageWindow(props) {
 
   const uploadFile = () => {
     if (selectedFile === null) return;
+    setSentRequestStatus(true)
     const formData = new FormData();
     formData.append("data", selectedFile, selectedFile.name);
     axios
       .post("api/upload", formData)
       .then((response) => {
-        setServerResponse(response.data.result);
-        console.log(response.data.result);
+        setServerResponse({success: response.data.result});
+        setSentRequestStatus(false)
+        setSelectedFile(null)
       })
       .catch((err) => {
-        console.log(err);
-        setServerResponse(err);
+        if(err.response)
+          setServerResponse({error: err.response.data});
+        setSentRequestStatus(false)
+        setSelectedFile(null)
       });
   };
   return (
@@ -68,10 +74,15 @@ function UploadImageWindow(props) {
         <p>Only files below 5MB</p>
       </div>
       <div className="upload_image_window__upload_file mt-3">
-        <input type="file" onChange={onFileChange} />
+        <input type="file" className="file_upload_button" onChange={onFileChange} />
+        {sentRequestStatus
+        ?<ButtonLoader />
+        :
         <button type="submit" className="submit_button" onClick={uploadFile}>
-          Submit
+            Submit
         </button>
+        }
+        
       </div>
       
       {serverResponse.length === 0 ? (
@@ -80,19 +91,22 @@ function UploadImageWindow(props) {
         <div className="server_response">
           <div className="server_response__header">
             <h2>
-              Added to db: {serverResponse.numberOfAddedAccounts} of uploaded:{" "}
-              {serverResponse.numberOfGivenAccounts}
+              Added to db: {serverResponse.success.numberOfAddedAccounts || 0} of uploaded:{" "}
+              {serverResponse.success.numberOfGivenAccounts || 0}
             </h2>
           </div>
           <div className="server_response__body">
-            {serverResponse
-              ? serverResponse.defectedAccounts.map((defect, index) => (
-                  <div className="server_response__body__errors">
-                    <p key={index}>{defect.account.url}:</p>{" "}
+            {serverResponse.success
+              ? serverResponse.success.defectedAccounts.map((defect, index) => (
+                  <div key={index} className="server_response__body__errors">
+                    <p>{defect.account.url}:</p>{" "}
                     <p>{defect.reason}</p>
                   </div>
                 ))
-              : ""}
+              : serverResponse.error
+                ? <p>{serverResponse.error}</p>
+                : ""
+            }
           </div>
         </div>
       )}

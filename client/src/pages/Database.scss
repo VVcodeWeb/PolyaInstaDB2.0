@@ -1,7 +1,7 @@
 @import "../variables";
 .db{
     input{
-        width: 100%;
+        width: 450px;
         height: 40px!important;
     }
     height: 100%;
@@ -21,31 +21,31 @@
                 flex: 1;
             }
             .search{
-                flex: 1;
+                flex: 3;
                 position: relative;
                 .expand_icon_wrapper{
                     z-index: 2;
                     position: absolute;
                     top: 8px;
-                    right: 15px;
+                    left: 410px;
                 }
                 &::after{
                     content: "";
                     position: absolute;
                     top: 0;
                     z-index: 2;
-                    right: 45px;
+                    left: 390px;
                     width: 1px;
                     height: 100%;
                     background: #c3c3c3;
                 }
             }   
             .actions{
-                flex: 1;
                 &_icon_wrapper{
                     width: 100%;
                     display: flex;
                     justify-content: flex-end;
+                    cursor: pointer;
                     svg{
                         margin-right: 30px;
                         font-size: 25px;

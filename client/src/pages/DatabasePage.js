@@ -6,57 +6,57 @@ import "@material-ui/core";
 
 //components, utils, scss
 import { getAuthenticationStatus } from "../utils/utils";
-import Input from "../components/Input";
-import DataTable from "../components/DataTable";
+import DataTable from "../components/Table/DataTable";
+import SearchInput from "../components/Table/SearchInput"
 
 //icons
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faRedo,
-  faTimes,
-  faSearch,
-  faEllipsisH,
-} from "@fortawesome/free-solid-svg-icons";
+
 
 function DatabasePage() {
+  const DataTableMemo = React.memo(DataTable)
   const [isLoggedIn, setLoggedIn] = useState("");
   const [allAccounts, setAllAccounts] = useState([]);
-  const fetchAllAccounts = () => {
-    axios
-      .get("/api/accounts")
-      .then((response) => {
-        setAllAccounts(response.data.result);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  const [filterByValue, setFilterByValue] = useState("")
+
+  const handleSearchFieldChange = (value) => setFilterByValue(value)
+  
   useEffect(() => {
+    //const abortController = new AbortController()
+    const fetchAllAccounts = () => {
+      axios
+        .get("/api/accounts")
+        .then((response) => {
+          if(response.data.result)
+            setAllAccounts(response.data.result);
+        })
+        .catch((err) => {
+          console.log(err)
+          if(err.response.data)
+            console.log(err.response.data);
+          
+        });
+    };
     fetchAllAccounts();
     getAuthenticationStatus(setLoggedIn);
+    return () => {
+      //abortController.abort()
+    }
   }, []);
+
   return (
     <div className="db">
       <div className="db__main_content">
         <div className="db__main_content__header p-4">
+          
           <div className="title">
-            <h1>{isLoggedIn ? "Welcome Polya!" : "Welcome stranger!"}</h1>
+            <h2>{isLoggedIn ? "Welcome Polya!" : "Welcome stranger!"}</h2>
           </div>
           <div className="search">
-            <Input type="db" icon={faSearch}></Input>
-            <div className="expand_icon_wrapper">
-              <FontAwesomeIcon icon={faEllipsisH} />
-            </div>
-          </div>
-          <div className="actions">
-            <div className="actions_icon_wrapper">
-              <FontAwesomeIcon icon={faRedo} />
-              <FontAwesomeIcon icon={faTimes} />
-            </div>
+            <SearchInput type="db" onChange={handleSearchFieldChange}></SearchInput>
           </div>
         </div>
         <div className="data_table m-3 mt-5">
-          <DataTable key={allAccounts} rows={allAccounts} />
+           <DataTableMemo rows={allAccounts} filterByValue={filterByValue}/>
         </div>
       </div>
     </div>

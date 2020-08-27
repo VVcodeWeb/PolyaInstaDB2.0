@@ -8,7 +8,7 @@
     transform-origin: 40px 40px;
 
   }
-  .lds-heart div {
+  .lds-heart td {
     top: 32px;
     left: 32px;
     position: absolute;
@@ -17,8 +17,8 @@
     background: linear-gradient(#c850c0, #4158d0);
     animation: lds-heart 1.2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
   }
-  .lds-heart div:after,
-  .lds-heart div:before {
+  .lds-heart td:after,
+  .lds-heart td:before {
     content: " ";
     position: absolute;
     display: block;
@@ -26,11 +26,11 @@
     height: 32px;
     background: linear-gradient(#c850c0, #4158d0);
   }
-  .lds-heart div:before {
+  .lds-heart td:before {
     left: -24px;
     border-radius: 50% 0 0 50%;
   }
-  .lds-heart div:after {
+  .lds-heart td:after {
     top: -24px;
     border-radius: 50% 50% 0 0;
   }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./Uploaders.scss";
 import "./UploadAccount.scss";
 
@@ -8,10 +8,13 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import ButtonLoader from "./ButtonLoader";
+
 
 function UploadAccount(props) {
-  const [failedInput, setFailedInput] = useState(false);
-  const [serverResponse, setServerResponce] = useState("")
+  //const [failedInput, setFailedInput] = useState(false);
+  const [sentRequestStatus,setSentRequestStatus] = useState(false)
+  const [serverResponse, setServerResponse] = useState("")
   const dataToSendSkeleton = {
     url: "",
     theme: "",
@@ -37,6 +40,7 @@ function UploadAccount(props) {
   const submitInputHandler = async() => {
     try {
       if(!dataToSend.url) return;
+      setSentRequestStatus(true)
       const params = new URLSearchParams()
       params.append("url", dataToSend.url)
       params.append("theme", dataToSend.theme)
@@ -51,10 +55,18 @@ function UploadAccount(props) {
       params.append("blackList", dataToSend.blackList)
     
       const response = await axios.post("api/account", params)
-      setServerResponce(response.data)
+      if(response.data.hasOwnProperty("result"))
+        setServerResponse({success: response.data.result});
+      else
+        setServerResponse({...response.data})
+      setSentRequestStatus(false)
       setDataToSend(dataToSendSkeleton)
-    } catch (error) {
-      setServerResponce(error.response.data)
+    } catch (err) {
+      if(err.response.data.hasOwnProperty("error"))
+        setServerResponse({error: err.response.data.error});
+      else 
+        setServerResponse({error: "Unrecognized error occured"})
+      setSentRequestStatus(false)
     }
   };
 
@@ -142,18 +154,16 @@ function UploadAccount(props) {
           }
           label="Blacklist"
         />
-        {serverResponse
-          ? <div  className={`server_response ${serverResponse.error? "error": "success"}`} ><p>{serverResponse.error? serverResponse.error: serverResponse.result}</p></div>
-          :<></>
+        <div className="server_response">
+          {serverResponse.success
+            ? <p className="success">{serverResponse.success}</p>
+            : <p className="error">{serverResponse.error}</p>
+          }
+        </div>
+        {sentRequestStatus
+          ? <ButtonLoader />
+          : <button type="submit" className={`submit_button ${serverResponse? "move_down_50px": ""}`} value={dataToSend.blackList} onClick={submitInputHandler}> Submit </button>
         }
-        <button
-          type="submit"
-          className="submit_button"
-          value={dataToSend.blackList}
-          onClick={submitInputHandler}
-        >
-          Submit
-        </button>
       </div>
     </div>
   );

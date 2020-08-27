@@ -9,11 +9,11 @@ import {
   faUserAlt,
   faFileUpload,
 } from "@fortawesome/free-solid-svg-icons";
-import UploadImageWindow from "../components/UploadImageWindow";
+import UploadImageWindow from "./UploadFileWindow";
 import UploadAccount from "../components/UploadAccount"
 
 function SideBar() {
-    const [uploaderOpenStatus, setUploaderOpenStatus] = useState(false)
+    //const [uploaderOpenStatus, setUploaderOpenStatus] = useState(false)
     const [windowsOpen, setWindowsOpen] = useState({
       uploadAccount: false,
       uploadFile: false
@@ -38,6 +38,7 @@ function SideBar() {
         changeUploadWindowStatus={changeOpenWindowsStatus} 
         open={windowsOpen.uploadAccount}
       />
+      <div className="side_bar__header py-3"><h1>P</h1></div>
       <div className="side_bar__content_wrapper">
         <Link className="content__buttons mt-3" to="/">
           <FontAwesomeIcon className="icons" icon={faCaretSquareLeft} />

@@ -140,8 +140,14 @@ const AccountMethods = {
 
 // ---------------------------Users--------------------------------------
 const UserMethods = {
-  findUserByEmail: async (email) =>
-    await USER_REF.where("email", "==", email).get(),
+  findUserByEmail: async (email) =>{
+    const userQuerySnapshot = await USER_REF.where("email", "==", email).get()
+    if(userQuerySnapshot.size !== 1)
+      throw new Error("Cant find user by given credentials")
+    let userDoc;
+    userQuerySnapshot.forEach(doc => userDoc = doc)  
+    return userDoc
+  },
   bcryptPassword: async (password) => await bcrypt.hash(password, 8),
   generateAuthToken: (data) =>
     jwt.sign(data, process.env.JWT_SECRET, { expiresIn: "2h" }),
@@ -161,13 +167,11 @@ const UserMethods = {
   },
 
   findUserByEmailAndPassword: async (email, password) => {
-    const user = UserMethods.getDataAndIdOutSnapshot(
-      await UserMethods.findUserByEmail(email.trim())
-    );
-    if (!user.data) throw new Error("Cant find an user with given credentials");
-    if (await !bcrypt.compare(password, user.data.password))
+    const userDoc = await UserMethods.findUserByEmail(email.trim())
+    if (!userDoc) throw new Error("Cant find an user with given credentials");
+    if (await !bcrypt.compare(password, userDoc.data().password))
       throw new Error("Cant find an user with given credentials");
-    return user;
+    return {data: userDoc.data(), id: userDoc.id};
   },
 
   createUser: async (body) => {

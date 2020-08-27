@@ -1,9 +1,22 @@
 @import "../variables";
 .side_bar{
-    width: 200px;
-    background: #0A3763;
+    width: 150px;
+    background: #4e4d4d;
     display: inline-block;
     min-height: 100vh;
+    &__header{
+        font-family: "P";
+        font-weight: bold;
+        color: #ffffff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: $another_green;
+        height: 94px;
+        h1{
+            font-size: 50px;
+        }
+    }
     &__content_wrapper{
         display: flex;
         flex-direction: column;
@@ -15,7 +28,7 @@
             .icons{
                 font-size: 35px;
                 margin-top: 40px;
-                color: $main_green;
+                color: $bright_green;
             }
         }
         .uploader{

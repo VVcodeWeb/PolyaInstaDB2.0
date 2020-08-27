@@ -14,6 +14,8 @@ exports.createUser = async(req, res) =>{
 }
 
 exports.loginUser = async(req, res) =>{
+    if(!req.body.email || !req.body.password)
+        res.status(400).json({error: "No password or email are provided", result:"Cant login"})
     try {
         const user = await UserMethods.findUserByEmailAndPassword(req.body.email, req.body.password)
         const token = UserMethods.generateAuthToken({email: user.email, id: user.id})

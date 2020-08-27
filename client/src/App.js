@@ -8,20 +8,22 @@ import SideBar from "./components/SideBar"
 import {Switch, Route} from "react-router-dom"
 
 
-function App() {
-  return (
-    <div className="App">
-      <Switch>
-        <Route path="/" exact component={MainPage} />
-        <Fragment>
-            <SideBar />
-            <Route path="/database" component={DatabasePage} />
-            <Route path="/account/:url" component={AccountPage} />
-        </Fragment>
-        <Route component={NotFoundPage} />
-      </Switch>
-    </div>
-  );
+class App extends React.Component {
+  render() {
+    return(
+      <div className="App">
+        <Switch>
+          <Route path="/" exact component={MainPage} />
+           <Fragment>
+              <SideBar />
+              <Route path="/database" exact component={DatabasePage} />
+              <Route path="/account/:url" exact component={AccountPage} />
+          </Fragment>
+          <Route component={NotFoundPage} />
+        </Switch>
+      </div>
+    )
+  };
 }
 
 export default App;

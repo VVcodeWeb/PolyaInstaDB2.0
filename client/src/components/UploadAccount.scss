@@ -8,18 +8,19 @@
     z-index: 10;
 	margin: 10px auto;
     background: #f4f7f8;
-    box-shadow: 3px 3px 5px 6px #ccc;
+    box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
     transition: all 0.5s ease-out;
     border-radius: 8px;   
     .inputs{
         line-height: 40px;
         .server_response{
             transition: all 0.3s ease-out;
-            height: 0;
         }
         .submit_button{
             display: block;
+            transition: all 0.4s ease-out;
         }
+        
         .error{
             color: #f10707;
             height: 100px!important;

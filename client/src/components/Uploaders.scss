@@ -15,6 +15,7 @@
 .close_window{
     opacity: 0;
     transform: translateX(1000px);
+    pointer-events: none;
 }
 
 .close_icon_wrapper{

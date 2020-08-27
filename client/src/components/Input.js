@@ -10,7 +10,7 @@ const Input = (props) => {
                         type={props.hidden? "password": "text"} name={props.name}/>
             <FocusAnim fail={props.failedAuthentication} />
             {props.icon
-            ?<Icon fail={props.failedAuthentication}><FontAwesomeIcon icon={props.icon}/></Icon>
+            ?<Icon onClick={props.onIconClick} fail={props.failedAuthentication}><FontAwesomeIcon onClick={props.onIconClick} icon={props.icon}/></Icon>
             :<> </>
             }
         </InputWrapper>
@@ -74,7 +74,9 @@ const Icon = styled.span`
     align-items:center;
     padding-left: 35px;
     pointer-events: none;
+    z-index: 10000;
     transition: all 0.4s ease-out;
+    cursor: ${props => props.onIconClick?  "default": "pointer"};
     ${InputField}:focus ~ & {
         color: ${props => props.fail? "#f10707": "#469A20"};
         transform: translateX(-10px);

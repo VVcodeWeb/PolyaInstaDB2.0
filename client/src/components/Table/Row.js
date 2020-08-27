@@ -1,5 +1,8 @@
 import React from "react";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import "./Row.scss"
+
+//Material UI
+import { withStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Collapse from "@material-ui/core/Collapse";
 import IconButton from "@material-ui/core/IconButton";
@@ -11,22 +14,23 @@ import TableRow from "@material-ui/core/TableRow";
 import Typography from "@material-ui/core/Typography";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+import Checkbox from '@material-ui/core/Checkbox';
 
 
-import "./Row.scss"
+//icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCommentDots} from "@fortawesome/free-solid-svg-icons"
 
 
 function Row(props) {
   const row = props.row
-  const useRowStyles = makeStyles({
+  /* const useRowStyles = makeStyles({
     root: {
       "& > *": {
         borderBottom: "unset",
       },
     },
-  });
+  }); */
   const StyledTableCell = withStyles((theme) => ({
     root: {
       "&:nth-of-type(odd)": {
@@ -34,11 +38,37 @@ function Row(props) {
       },
     },
   }))(TableCell);
+  const GreenCheckbox = withStyles({
+    root: {
+      color: "#1ad53a",
+      '&$checked': {
+        color: "#57B846",
+      },
+    },
+    checked: {},
+  })((props) => <Checkbox color="default" {...props} />);
+
   const [open, setOpen] = React.useState(false);
-  const classes = useRowStyles();
+  //const classes = useRowStyles();
+  //Array of selected should be provied  by the table
+  //classes root
   return (
       <React.Fragment>
-        <TableRow className={classes.root}>
+        <TableRow
+          hover
+          onClick={(event) => props.handleClick(event, row.url)}
+          role="checkbox"
+          aria-checked={row.ariaCheck}
+          tabIndex={-1}
+          key={row.url}
+          selected={row.ariaCheck}
+        >
+          <StyledTableCell padding="checkbox">
+            <GreenCheckbox
+              checked={props.ariaCheck}
+              inputProps={{ 'aria-labelledby': props.labelId }}
+            />
+          </StyledTableCell>
           <StyledTableCell>
             <IconButton
               aria-label="expand row"
@@ -48,7 +78,7 @@ function Row(props) {
               {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </IconButton>
           </StyledTableCell>
-          <StyledTableCell component="th" scope="row"><a className="link" target="blank" href={row.url}>{row.url.substring(26) || "Missing"}</a></StyledTableCell>
+          <StyledTableCell component="th" scope="row" id={props.labelId}><a className="link" target="blank" href={row.url}>{row.url.substring(26) || "Missing"}</a></StyledTableCell>
           <StyledTableCell align="right">{row.theme || " - "}</StyledTableCell>
           <StyledTableCell align="right">{row.product || " - "}</StyledTableCell>
           <StyledTableCell align="right">{row.reach || " - "}</StyledTableCell>
@@ -103,7 +133,7 @@ function Row(props) {
 }
 
 const comment_icon = {
-  color: "#333333",
+  color: "#1ad53a",
   fontSize: "15px"
 }
 
