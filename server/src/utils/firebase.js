@@ -1,6 +1,5 @@
 const admin = require("firebase-admin")
-
-/* const serviceAccount = {
+const serviceAccount = {
   "type": process.env.type,
   "project_id": process.env.project_id,
   "private_key_id": process.env.private_key_id,
@@ -12,8 +11,8 @@ const admin = require("firebase-admin")
   "auth_provider_x509_cert_url": process.env.auth_provider_x509_cert_url,
   "client_x509_cert_url": process.env.client_x509_cert_url
 }
- */
-const serviceAccount = require("../../config/firebase-adminsdk-key.json")
+ 
+
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     databaseURL: "https://polyainstadb.firebaseio.com"
