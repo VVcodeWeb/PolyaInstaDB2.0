@@ -1,30 +1,26 @@
 //libs,scss
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "./Database.scss";
-import "@material-ui/core";
+import "./database.scss";
 
-//components, utils, scss
-import { getAuthenticationStatus } from "../utils/utils";
+//components, utils
 import DataTable from "../components/Table/DataTable";
-import SearchInput from "../components/Table/SearchInput"
-
+import Drawer from "../components/Drawer"
 //icons
 
 
 function DatabasePage() {
   const DataTableMemo = React.memo(DataTable)
-  const [isLoggedIn, setLoggedIn] = useState("");
   const [allAccounts, setAllAccounts] = useState([]);
   const [filterByValue, setFilterByValue] = useState("")
 
   const handleSearchFieldChange = (value) => setFilterByValue(value)
   
   useEffect(() => {
-    //const abortController = new AbortController()
+    const ac = new AbortController()
     const fetchAllAccounts = () => {
       axios
-        .get("/api/accounts")
+        .get("/api/accounts", {signal: ac.signal})
         .then((response) => {
           if(response.data.result)
             setAllAccounts(response.data.result);
@@ -37,25 +33,16 @@ function DatabasePage() {
         });
     };
     fetchAllAccounts();
-    getAuthenticationStatus(setLoggedIn);
     return () => {
-      //abortController.abort()
+      ac.abort()
     }
   }, []);
 
   return (
     <div className="db">
       <div className="db__main_content">
-        <div className="db__main_content__header p-4">
-          
-          <div className="title">
-            <h2>{isLoggedIn ? "Welcome Polya!" : "Welcome stranger!"}</h2>
-          </div>
-          <div className="search">
-            <SearchInput type="db" onChange={handleSearchFieldChange}></SearchInput>
-          </div>
-        </div>
-        <div className="data_table m-3 mt-5">
+        <Drawer setParentField={handleSearchFieldChange}/>  
+        <div className="data_table">
            <DataTableMemo rows={allAccounts} filterByValue={filterByValue}/>
         </div>
       </div>

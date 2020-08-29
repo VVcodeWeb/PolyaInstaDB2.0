@@ -3,16 +3,19 @@ import styled, { keyframes } from "styled-components"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const Input = (props) => {
+    
     return (
         <InputWrapper type={props.type}>
             <InputField fail={props.failedAuthentication} required={true} 
                         placeholder={props.placeholder} value={props.value} onChange={props.onChange} 
-                        type={props.hidden? "password": "text"} name={props.name}/>
+                        type={props.hidden? "password": "text"} name={props.name} height={props.height} 
+                        fullWidth={props.fullWidth}/>
             <FocusAnim fail={props.failedAuthentication} />
-            {props.icon
-            ?<Icon onClick={props.onIconClick} fail={props.failedAuthentication}><FontAwesomeIcon onClick={props.onIconClick} icon={props.icon}/></Icon>
-            :<> </>
-            }
+            {props.icon && (
+            <Icon onClick={props.onIconClick} fail={props.failedAuthentication}>
+                <FontAwesomeIcon onClick={props.onIconClick} icon={props.icon}/>
+            </Icon>
+            )}
         </InputWrapper>
         
     )
@@ -22,8 +25,6 @@ const animate_focus = keyframes `
       box-shadow: 0px 0px 70px 25px;
       opacity: 0;
 `
-
-
 const FocusAnim = styled.span`
     display: block;
     position: absolute;
@@ -34,20 +35,21 @@ const FocusAnim = styled.span`
     width: 100%;
     height: 100%;
     box-shadow: 0px 0px 0px 0px;
-    color: ${props => props.fail? "#f10707": "rgba(87, 184, 70, 0.8)"};
+    color: ${props => props.fail? "#d50000": "#311b92"};
 `
 
 
 const InputWrapper = styled.div`
     position: relative;
+    width: 100%;
     margin-bottom: ${props => props.type? "0px": "15px"};
     z-index: 1;
 `
-
 const InputField = styled.input`
     border-radius: 25px;
     padding:0 30px 0 60px;
-    height: 50px;
+    width: ${props => props.fullWidth? "100%": ""};
+    height: ${props => props.height || "50px"};
     border: ${props => props.fail? "2px solid #ca0404": "none"};
     background: #E6E6E6;
     transition: all 0.5s ease-out;
@@ -61,8 +63,6 @@ const InputField = styled.input`
         opacity: 0;
     }
 `
-
-
 const Icon = styled.span`
     position: absolute;
     top: 0;
@@ -78,10 +78,8 @@ const Icon = styled.span`
     transition: all 0.4s ease-out;
     cursor: ${props => props.onIconClick?  "default": "pointer"};
     ${InputField}:focus ~ & {
-        color: ${props => props.fail? "#f10707": "#469A20"};
+        color: ${props => props.fail? "#f10707": "#311b92"};
         transform: translateX(-10px);
     }
 `
-
-
 export default Input

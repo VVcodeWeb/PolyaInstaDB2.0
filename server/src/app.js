@@ -8,6 +8,12 @@ const fileUpload = require("express-fileupload")
 const app = express()
 
 app.use(cookieParser())
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
 app.use(fileUpload({
     limits: {fileSize: 1024*1024*40},
     useTempFiles: true,

@@ -1,0 +1,86 @@
+@import "../../variables";
+
+.upload_image_window{
+    position: fixed;
+    width: 700px;
+    height: 600px;
+    top: calc(50% - 400px);
+    left: calc(50% - 300px);
+    box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+    background: #fcfcfc;
+    transition: all 0.5s ease-out;
+    z-index: 10;
+  
+    
+    .server_response{
+        min-height: 400px;
+        width: 100%;
+        &__body{
+            overflow-y: scroll;
+            height: 280px;
+            &__errors{
+                display: flex;
+                justify-content: space-between;
+            }
+        }
+    }
+}
+
+.notes{
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    .note{
+        display: inline-block;
+    }
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all 0.3s ease-out;
+    font-size: 14px;
+    p{
+        border-right: 1px solid #f3f3f3;
+    }
+}
+
+.notes.open{
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+
+.upload_image_window__text{
+    .question_circle{
+        color: $another_green;
+        cursor: pointer;
+    }
+    &_note{
+        padding:10px 15px; 
+        display: flex;
+        align-items: center;
+        p{
+            margin: 0;
+        }
+    }
+}
+.upload_image_window__upload_file{
+    margin: 8px 24px;
+    
+}
+.file_upload_button {
+    display: inline-block;
+    cursor: pointer;
+    padding: 120px 0 0 0;
+    height: 100px;
+    overflow: hidden;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    background: url('https://cdn1.iconfinder.com/data/icons/hawcons/32/698394-icon-130-cloud-upload-512.png') center center no-repeat #fcfcfc;
+    border-radius: 20px;
+    background-size: 60px 60px;
+    &:focus{
+        outline: none;
+    }
+}

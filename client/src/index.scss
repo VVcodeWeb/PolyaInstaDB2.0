@@ -31,3 +31,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+a:focus, button:focus, svg:focus, icon:focus{
+  outline: none;
+}
+

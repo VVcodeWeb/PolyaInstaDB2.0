@@ -5,7 +5,7 @@ const auth = require('../utils/auth')
 const { getAllAccounts, 
         uploadFile, 
         findAccount, 
-        deleteAccount, 
+        deleteAccounts, 
         postAccount } = require("../handlers/accounts.handler")
 
 /* TODO: MAKE API PREFIX, RESTRUCTURE DIRS, check for spelling emails etc */
@@ -13,9 +13,9 @@ const { getAllAccounts,
 router.get('/accounts', getAllAccounts)
 router.get('/account', findAccount)
 router.post('/account', auth, postAccount)
-router.delete('/account', auth, deleteAccount)
+router.delete('/account', auth, deleteAccounts)
 
 //TODO: add auth as middleware
-router.post("/upload", uploadFile)
+router.post("/upload", auth, uploadFile)
 
 module.exports = router 

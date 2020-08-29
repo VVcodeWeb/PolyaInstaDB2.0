@@ -1,12 +1,10 @@
 import React, { Fragment } from 'react';
 import './App.scss';
-import MainPage from "./pages/MainPage";
-import DatabasePage from "./pages/DatabasePage";
+import MainPage from "./pages/main";
+import DatabasePage from "./pages/database";
 import AccountPage from "./pages/AccountPage"
 import NotFoundPage from "./pages/NotFoundPage"
-import SideBar from "./components/SideBar"
 import {Switch, Route} from "react-router-dom"
-
 
 class App extends React.Component {
   render() {
@@ -15,7 +13,6 @@ class App extends React.Component {
         <Switch>
           <Route path="/" exact component={MainPage} />
            <Fragment>
-              <SideBar />
               <Route path="/database" exact component={DatabasePage} />
               <Route path="/account/:url" exact component={AccountPage} />
           </Fragment>

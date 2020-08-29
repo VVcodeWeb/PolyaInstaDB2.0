@@ -1,4 +1,4 @@
-@import "../variables";
+@import "../../variables";
 .upload_account_window{
     font-family: Georgia, "Times New Roman", Times, serif;
     position: fixed;
@@ -47,4 +47,7 @@
             color: #f10707;
         }
     }
+}
+.MuiDialog-paperWidthSm{
+    max-width: 700px!important;
 }

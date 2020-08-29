@@ -1,18 +1,18 @@
-//libs
+//Libs, scss
 import React, {useState, useEffect, useRef} from 'react'
 import { useHistory } from "react-router-dom"
 import axios from "axios"
+import "./main.scss"
 import {Link} from "react-router-dom"
-//components, utils, scss
-import "./MainPage.scss"
+//components, utils
 import {getAuthenticationStatus} from "../utils/utils"
 import InputForm from "../components/Input"
-import ButtonLoader from "../components/ButtonLoader"
 //icons, imgs
 import img from "../assets/img.png"
 import { faEnvelope, faLock} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
+import CircularProgress  from '@material-ui/core/CircularProgress'
 
 function MainPage() {
     const [email, setEmail] = useState("")
@@ -107,7 +107,7 @@ function MainPage() {
                         }
                         <div className="button_wrapper mt-5">
                         {sentRequestStatus
-                            ? <ButtonLoader />
+                            ? <CircularProgress />
                             : <button className="login_button text-uppercase" onClick={loginHandler}>{isLoggedIn? "Towards DB": "Login"}</button>
                         }
                     </div>                      

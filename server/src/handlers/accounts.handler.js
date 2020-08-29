@@ -49,16 +49,29 @@ exports.postAccount = async(req, res) => {
     }
 } 
 
-exports.deleteAccount = async(req, res) =>{
+exports.deleteAccounts = async(req, res) =>{
+    urlAccountsToDelete = req.body.accounts || req.query.accounts || []
     try{
-        if(req.query.url){
-            await ACCOUNT_REF.doc(AccountMethods.convertUrlToName(req.query.url)).delete()
+        if(Array.isArray(urlAccountsToDelete)){
+            await Promise.all(
+                urlAccountsToDelete.map(async url => {
+                    await ACCOUNT_REF.doc(AccountMethods.convertUrlToName(url)).delete()
+                    //await ACCOUNT_REF.where("url", "==", url).delete()
+                })
+            )
             res.json({result: "Deleted"})
+        } else if(typeof urlAccountsToDelete === "string"){
+            await ACCOUNT_REF.doc(AccountMethods.convertUrlToName(urlAccountsToDelete)).delete()
+            //await ACCOUNT_REF.where("url", "==", url).delete()
+            res.json({result: "Deleted"})
+        } else {
+            res.status(400).json({error: "No account spotted"})
         }
     }catch(e){
         res.status(400).json({error: e.message, result: "Can't delete document. Check url"})
     }
 }
+
 
 
 exports.uploadFile = async (req, res) => {
@@ -77,8 +90,7 @@ exports.uploadFile = async (req, res) => {
             const informatinoAboutExractedAccs = await AccountMethods.extractValidAccountsFromArray(accounts)
             const {uniqueValidAccounts, repeatedAccounts} = AccountMethods.removeUrlRepetitionsFromArray(informatinoAboutExractedAccs.validAccounts)
             informatinoAboutExractedAccs.numberOfAddedAccounts -= repeatedAccounts.length
-            repeatedAccounts.forEach((acc) => informatinoAboutExractedAccs.defectedAccounts.push(acc))
-            
+            repeatedAccounts.forEach((account) => informatinoAboutExractedAccs.defectedAccounts.push({account, reason: "Repeated account"}))     
             uniqueValidAccounts.forEach(async (account) => {
                 if(account){
                     try {
@@ -90,7 +102,7 @@ exports.uploadFile = async (req, res) => {
                 }
             })
             informatinoAboutExractedAccs.validAccounts = uniqueValidAccounts
-            setTimeout(() => deleteFile(file.tempFilePath), time_remaining(Date.now() + 1000 * 30))
+            setTimeout(() => deleteFile(file.tempFilePath), time_remaining(Date.now() + 1000 * 15))
             res.json({result: informatinoAboutExractedAccs})
         })
 

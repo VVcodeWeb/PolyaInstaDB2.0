@@ -1,9 +1,5 @@
 @import "../variables";
 .db{
-    input{
-        width: 450px;
-        height: 40px!important;
-    }
     height: 100%;
     font-family: $main_font_italic;
     width: 100%;
@@ -55,6 +51,9 @@
             }
         }
         .data_table{
+            width: 92%;
+            margin-left: 100px;  
+            margin-top: 100px;          
             box-shadow: 0 32px 32px rgba(0,0,0,0.11);
             border: none;
         }

@@ -89,8 +89,13 @@ const AccountMethods = {
     let addedAccounts = accounts.length;
     const allAccounts = await Promise.all(
       accounts.map(async (account) => {
-        if (account.hasOwnProperty("url")) {
-          account.url = AccountMethods.clearGivenUrl(account.url);
+        if (account.hasOwnProperty("url")){
+          try {
+            account.url = AccountMethods.clearGivenUrl(account.url);     
+          } catch (error) {
+            addedAccounts--;
+            defectedAccounts.push({account, reason: error.message})
+          } 
           try {
             await AccountMethods.validateUrl(account.url);
           } catch (e) {
@@ -106,7 +111,6 @@ const AccountMethods = {
             defectedAccounts.push({ account, reason: "Is already in DB" });
             return;
           }
-
           return AccountMethods.createAccount(account);
         } else {
           addedAccounts--;

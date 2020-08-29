@@ -1,8 +1,11 @@
-import React from "react";
-import "./Row.scss"
-
+import React, {useState} from "react";
+import dayjs from "dayjs"
+import PropTypes from "prop-types"
 //Material UI
-import { withStyles } from "@material-ui/core/styles";
+import Divider from '@material-ui/core/Divider';
+import Dialog from "@material-ui/core/Dialog"
+import DialogTitle from "@material-ui/core/DialogTitle"
+import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Collapse from "@material-ui/core/Collapse";
 import IconButton from "@material-ui/core/IconButton";
@@ -15,48 +18,47 @@ import Typography from "@material-ui/core/Typography";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import Checkbox from '@material-ui/core/Checkbox';
-
-
 //icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCommentDots} from "@fortawesome/free-solid-svg-icons"
+import { DialogContent } from "@material-ui/core";
 
+const useStyles = makeStyles({
+  root:{
+    background: "#A52A2A",
+  },
+  a:{
+    color: "#fff",
+    "&:hover": {
+      color: "#fff"
+    }
+  }
+})
 
 function Row(props) {
+  const classes = useStyles()
   const row = props.row
-  /* const useRowStyles = makeStyles({
-    root: {
-      "& > *": {
-        borderBottom: "unset",
-      },
-    },
-  }); */
   const StyledTableCell = withStyles((theme) => ({
-    root: {
-      "&:nth-of-type(odd)": {
-        backgroundColor: theme.palette.action.hover,
-      },
-    },
+
   }))(TableCell);
-  const GreenCheckbox = withStyles({
+  const PurpuleCheckBox = withStyles({
     root: {
-      color: "#1ad53a",
+      color: "#7e57c2",
       '&$checked': {
-        color: "#57B846",
+        color: "#512da8",
       },
     },
     checked: {},
   })((props) => <Checkbox color="default" {...props} />);
 
-  const [open, setOpen] = React.useState(false);
-  //const classes = useRowStyles();
-  //Array of selected should be provied  by the table
-  //classes root
+  const [open, setOpen] = useState(false);
+  const [openDescription, setOpenDescription] = useState(false)
+  const handleClickOpen = () => setOpenDescription(true)
+  const handleClickClose = () => setOpenDescription(false)
+
   return (
       <React.Fragment>
         <TableRow
-          hover
-          onClick={(event) => props.handleClick(event, row.url)}
           role="checkbox"
           aria-checked={row.ariaCheck}
           tabIndex={-1}
@@ -64,8 +66,9 @@ function Row(props) {
           selected={row.ariaCheck}
         >
           <StyledTableCell padding="checkbox">
-            <GreenCheckbox
+            <PurpuleCheckBox
               checked={props.ariaCheck}
+              onClick={(event) => props.handleClick(event, row.url)}
               inputProps={{ 'aria-labelledby': props.labelId }}
             />
           </StyledTableCell>
@@ -78,7 +81,9 @@ function Row(props) {
               {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </IconButton>
           </StyledTableCell>
-          <StyledTableCell component="th" scope="row" id={props.labelId}><a className="link" target="blank" href={row.url}>{row.url.substring(26) || "Missing"}</a></StyledTableCell>
+          <StyledTableCell className={row.blackList && classes.root} scope="row" id={props.labelId}>
+              <a className={row.blackList && classes.a} target="blank" href={row.url}>{row.url.substring(26) || "Missing"}</a>
+          </StyledTableCell>
           <StyledTableCell align="right">{row.theme || " - "}</StyledTableCell>
           <StyledTableCell align="right">{row.product || " - "}</StyledTableCell>
           <StyledTableCell align="right">{row.reach || " - "}</StyledTableCell>
@@ -110,17 +115,28 @@ function Row(props) {
                   </TableHead>
                   <TableBody>
                     <TableRow key={new Date() || " - "}>
-                      <TableCell><div style={comment_icon}><FontAwesomeIcon icon={faCommentDots}/></div></TableCell>
-                      <TableCell component="th" scope="row">
-                          {new Date().toISOString() || " - "}
+                      {row.description
+                      ?(<TableCell>
+                          <div style={comment_icon_active}>
+                            <FontAwesomeIcon icon={faCommentDots} onClick={handleClickOpen}/>
+                          </div>
+                        </TableCell>
+                      ):(<TableCell>
+                          <div style={comment_icon_disabled} >
+                            <FontAwesomeIcon icon={faCommentDots}/>
+                          </div>
+                        </TableCell>
+                      )}
+                      <TableCell scope="row">
+                        {row.createdAt? dayjs(row.createdAt).format('DD.MM.YY HH:mm'):" Unknown "}
                       </TableCell>
-                      <TableCell component="th" scope="row">
-                        {new Date().toISOString() || " - "}
+                      <TableCell scope="row">
+                        {row.changedAt? dayjs(row.changedAt).format('DD.MM.YY HH:mm') : " - "}
                       </TableCell>
                       <TableCell>{row.percentTAgeo || " - "}</TableCell>
                       <TableCell>{row.percentTAsex || " - "}</TableCell>
                       <TableCell align="right">{row.percentTAage || " - "}</TableCell>
-                      <TableCell align="right">{row.fat || " - "}</TableCell>
+                      <TableCell align="right">{row.blackList? "Yes" :  " No "}</TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>
@@ -128,14 +144,35 @@ function Row(props) {
             </Collapse>
           </TableCell>
         </TableRow>
+        <Dialog open={openDescription} onClose={handleClickClose} aria-labelledby="form-dialog-title" className="p-5" fullWidth={true}>
+          <DialogTitle>Comment</DialogTitle>
+          <Divider component="hr" variant="middle" />
+          <DialogContent>
+            <Typography variant="body1">
+              {row.description}
+            </Typography>
+          </DialogContent>
+    
+        </Dialog>
       </React.Fragment>
   );
 }
 
-const comment_icon = {
-  color: "#1ad53a",
-  fontSize: "15px"
+Row.propTypes = {
+  row: PropTypes.object.isRequired,
+  handleClick: PropTypes.func.isRequired,
+  ariaCheck: PropTypes.bool.isRequired,
+  labelId: PropTypes.string.isRequired
 }
 
+const comment_icon_active = {
+  color: "#512da8",
+  fontSize: "15px",
+  cursor: "pointer"
+}
+const comment_icon_disabled = {
+  color: "#E1E1E1",
+  fontSize: "15px"
+}
 
 export default Row;

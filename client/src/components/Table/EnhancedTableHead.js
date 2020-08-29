@@ -22,11 +22,20 @@ function EnhancedTableHead(props) {
     const createSortHandler = (property) => (event) => {
       onRequestSort(event, property);
     };
+    const PurpuleCheckBox = withStyles({
+      root: {
+        color: "#7e57c2",
+        '&$checked': {
+          color: "#512da8",
+        },
+      },
+      checked: {},
+    })((props) => <Checkbox color="default" {...props} />);
     return (
       <TableHead>
         <TableRow>
           <StyledTableCell padding="checkbox">
-             <Checkbox
+             <PurpuleCheckBox
               indeterminate={numSelected > 0 && numSelected < rowCount}
               checked={rowCount > 0 && numSelected === rowCount}
               onChange={onSelectAllClick}
@@ -47,11 +56,6 @@ function EnhancedTableHead(props) {
                 onClick={createSortHandler(headCell.id)}
               >
                 {headCell.label}
-                {/* {orderBy === headCell.id ? (
-                  <span className={classes.visuallyHidden}>
-                    {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                  </span>
-                ) : null} */}
               </TableSortLabel>
             </StyledTableCell>
           ))}
