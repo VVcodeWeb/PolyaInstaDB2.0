@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {memo} from 'react'
 import PropTypes from 'prop-types';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
@@ -8,6 +8,18 @@ import Checkbox from '@material-ui/core/Checkbox';
 import {withStyles } from '@material-ui/core/styles';
 
 function EnhancedTableHead(props) {
+  const headCells = [
+    { id: "url", numeric: false, disablePadding: false, label: "URL" },
+    { id: "theme", numeric: false, disablePadding: false, label: "Тема" },
+    { id: "product", numeric: false, disablePadding: false, label: "Продукт" },
+    { id: "reach", numeric: true, disablePadding: false, label: "Охват" },
+    { id: "subscribersIncome", numeric: true, disablePadding: false, label: "Приход подписчиков",},
+    { id: "cost", numeric: true, disablePadding: false, label: "Стоимость" },
+    { id: "TA", numeric: true, disablePadding: false, label: "ЦА(%)" },
+    { id: "costReachTA", numeric: true, disablePadding: false, label: "Стоимость охвата ЦА"},
+    { id: "costReach", numeric: true, disablePadding: false, label: "Стоимость охвата"},
+    { id: "subscribersCost", numeric: true, disablePadding: false, label: "Стоимость подписчика"},
+  ];
     const StyledTableCell = withStyles((theme) => ({
         head: {
             backgroundColor: "#E1E1E1",
@@ -17,7 +29,7 @@ function EnhancedTableHead(props) {
             fontSize: 14
         },
       }))(TableCell);
-    const { headCells, onSelectAllClick, order, orderBy,
+    const { onSelectAllClick, order, orderBy,
             numSelected, rowCount, onRequestSort } = props;
     const createSortHandler = (property) => (event) => {
       onRequestSort(event, property);
@@ -75,4 +87,4 @@ function EnhancedTableHead(props) {
   };
   
 
-export default EnhancedTableHead
+export default memo(EnhancedTableHead)

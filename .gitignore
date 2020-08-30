@@ -2,3 +2,4 @@
 /node_modules
 account.schema.js
 mine.txt
+/client/src/utils/wydr.js

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, memo } from 'react'
 import PropTypes from "prop-types"
 import Input from "../Input"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -6,7 +6,7 @@ import { faRedo, faTimes, faEllipsisH, faSearch} from "@fortawesome/free-solid-s
 
 function SearchInput(props) {
     const [localSearchValue, setLocalSearchValue] = useState("")
-    const {type, onChange: setParentSearchValue} = props
+    const {onChange: setParentSearchValue} = props
     const resetFilter = () => {
         setLocalSearchValue("")
         setParentSearchValue("")
@@ -68,7 +68,7 @@ function SearchInput(props) {
         <div style={styles.search_field}>        
             <div style={styles.input_wrapper}>
                 <div style={styles.search_icon} onClick={handleSearchIconClick}></div>
-                <Input type={type} height="40px" fullWidth icon={faSearch} value={localSearchValue} onChange={inputFieldChange} />
+                <Input type={"db"} height="40px" fullWidth icon={faSearch} value={localSearchValue} onChange={inputFieldChange} />
                 <div style={styles.expand_icon} onClick={handlExpandIconClick}>
                     <FontAwesomeIcon icon={faEllipsisH} style={styles.icon} />
                 </div>
@@ -88,4 +88,4 @@ SearchInput.propTypes = {
 }
 
 
-export default SearchInput
+export default memo(SearchInput)

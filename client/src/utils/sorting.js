@@ -36,19 +36,24 @@ export function filterRowsByValue (rows, value) {
 
 
 const checkIfRowContainsSearchValue = (row, value) => {
-  if(!Object.prototype.toString.call(row) === "[object Object]")
-    return false
-  if(row.hasOwnProperty("url")){
-     if(row.url.toString().toLowerCase().trim().match(value))
+  try {
+      if(!Object.prototype.toString.call(row) === "[object Object]")
+      return false
+    if(row.hasOwnProperty("url")){
+      if(row.url.toString().toLowerCase().trim().match(value))
+          return true;
+    }
+    if(row.hasOwnProperty("theme")){
+      if(row.theme.toString().toLowerCase().trim().match(value))
         return true;
+    }
+    if(row.hasOwnProperty("product")){
+      if(row.product.toString().toLowerCase().trim().match(value))
+        return true;
+    }
+  } catch (error) {
+    return false
   }
-  if(row.hasOwnProperty("theme")){
-    if(row.theme.toString().toLowerCase().trim().match(value))
-      return true;
-  }
-  if(row.hasOwnProperty("product")){
-    if(row.product.toString().toLowerCase().trim().match(value))
-      return true;
-  }
+  
   return false
 }

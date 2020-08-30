@@ -1,21 +1,26 @@
 //libs,scss
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import "./database.scss";
 
 //components, utils
 import DataTable from "../components/Table/DataTable";
-import Drawer from "../components/Drawer"
+import NavBar from "../components/Navbar/NavBar"
 //icons
 
 
 function DatabasePage() {
-  const DataTableMemo = React.memo(DataTable)
+  
   const [allAccounts, setAllAccounts] = useState([]);
   const [filterByValue, setFilterByValue] = useState("")
 
-  const handleSearchFieldChange = (value) => setFilterByValue(value)
-  
+  const handleSearchFieldChange = useCallback(
+    (value) => {
+      setFilterByValue(value)
+    },
+    []
+  ) 
+
   useEffect(() => {
     const ac = new AbortController()
     const fetchAllAccounts = () => {
@@ -41,9 +46,9 @@ function DatabasePage() {
   return (
     <div className="db">
       <div className="db__main_content">
-        <Drawer setParentField={handleSearchFieldChange}/>  
+        <NavBar setParentField={handleSearchFieldChange}/>  
         <div className="data_table">
-           <DataTableMemo rows={allAccounts} filterByValue={filterByValue}/>
+           <DataTable rows={allAccounts} filterByValue={filterByValue}/>
         </div>
       </div>
     </div>
